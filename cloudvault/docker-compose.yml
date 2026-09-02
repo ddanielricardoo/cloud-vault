@@ -1,0 +1,29 @@
+services:
+  minio:
+    image: minio/minio
+    container_name: cloudvault-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: cloudvault
+      MINIO_ROOT_PASSWORD: cloudvault-dev-password
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+  postgres:
+    image: postgres:16
+    container_name: cloudvault-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: cloudvault
+      POSTGRES_PASSWORD: cloudvault-dev-password
+      POSTGRES_DB: cloudvault
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  minio_data:
+  postgres_data:

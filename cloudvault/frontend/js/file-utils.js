@@ -1,0 +1,8 @@
+const images = ["jpg", "jpeg", "png", "gif", "webp", "svg", "avif", "heic"];
+const media = ["mp3", "wav", "m4a", "ogg", "mp4", "mov", "avi", "webm", "mkv"];
+const documents = ["pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "txt", "md", "fig", "sketch", "xd"];
+export function extension(name) { return name.includes(".") ? name.split(".").pop().toLowerCase() : ""; }
+export function categoryOf(name) { const type = extension(name); return images.includes(type) ? "images" : media.includes(type) ? "media" : documents.includes(type) ? "documents" : "others"; }
+export function formatBytes(bytes = 0) { if (!bytes) return "0 B"; const sizes = ["B", "KB", "MB", "GB", "TB"]; const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), 4); const value = bytes / 1024 ** index; return `${value >= 10 || index === 0 ? Math.round(value) : value.toFixed(1)} ${sizes[index]}`; }
+export function formatDate(value) { if (!value) return "Recently added"; const date = new Date(value); return Number.isNaN(date.valueOf()) ? "Recently added" : date.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); }
+export function fileIcon(name) { const type = extension(name); if (type === "pdf") return ["file-text", "file-pdf"]; if (["doc", "docx"].includes(type)) return ["file-text", "file-doc"]; if (["xls", "xlsx", "csv"].includes(type)) return ["table", "file-sheet"]; if (["ppt", "pptx"].includes(type)) return ["presentation", "file-presentation"]; if (images.includes(type)) return ["image", "file-image"]; if (["mp3", "wav", "m4a", "ogg"].includes(type)) return ["music", "file-music"]; if (["mp4", "mov", "avi", "webm", "mkv"].includes(type)) return ["play", "file-video"]; return ["file", "file-other"]; }
